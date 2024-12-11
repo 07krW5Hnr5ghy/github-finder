@@ -5,3 +5,11 @@ async function getRepoInfo(){
 }
 
 getRepoInfo();
+const languages = ["javascript","python","java","ruby","php","go","c++"];
+const languageSelector = document.querySelector(".language-selector");
+
+languages.forEach(language=>{
+    const languageOption = document.createElement("option");
+    languageOption.textContent = language;
+    languageSelector.appendChild(languageOption);
+});
