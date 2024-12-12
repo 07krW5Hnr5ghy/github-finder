@@ -11,14 +11,44 @@ function getRandomInt(max){
     return Math.floor(Math.random()*max);
 }
 
-const languages = ["javascript","python","java","ruby","php","go","c++"];
+const languages = [
+    {
+        name:"javascript",
+        color:"#f1e05a"
+    },
+    {
+        name:"python",
+        color:"#3572a5"
+    },
+    {
+        name:"java",
+        color:"#b07219"
+    }
+    ,
+    {
+        name:"ruby",
+        color:"#701516"
+    },
+    {
+        name:"php",
+        color:"#4f5d95"
+    },
+    {
+        name:"go",
+        color:"#00add8"
+    },
+    {
+        name:"c++",
+        color:"#f34b7d"
+    }
+];
 const languageSelector = document.querySelector(".language-selector");
 const infoWrapper = document.querySelector(".info-wrapper");
 const refreshButton = document.querySelector(".refresh-button");
 
 languages.forEach(language=>{
     const languageOption = document.createElement("option");
-    languageOption.textContent = language;
+    languageOption.textContent = language.name;
     languageSelector.appendChild(languageOption);
 });
 
@@ -39,7 +69,14 @@ refreshButton.addEventListener("click",async ()=>{
     infoWrapper.removeChild(loadingInfo);
     spanName.textContent = repoInfo.name;
     description.textContent = repoInfo.description;
-    languageDiv.innerHTML=`<span>${repoInfo.language}</span>`;
+    const languageName = document.createElement("span");
+    languageName.textContent = repoInfo.language;
+    const languageColor = document.createElement("div");
+    languageColor.classList.add("language-color");
+    console.log(languages.find(language=>language.name===repoInfo.language.toLowerCase()));
+    languageColor.style.background = languages.find(language=>language.name === repoInfo.language.toLowerCase()).color;
+    languageDiv.appendChild(languageColor);
+    languageDiv.appendChild(languageName);
     starsDiv.innerHTML=`<i class="fa-solid fa-star"></i><span>${repoInfo.stargazers_count}</span>`;
     forksDiv.innerHTML=`<i class="fa-solid fa-code-fork"></i><span>${repoInfo.forks}</span>`;
     watchsDiv.innerHTML=`<i class="fa-regular fa-eye"></i><span>${repoInfo.watchers}</span>`;
