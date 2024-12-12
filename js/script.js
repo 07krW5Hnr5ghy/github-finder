@@ -3,6 +3,10 @@ const languageSelector = document.querySelector(".language-selector");
 const infoWrapper = document.querySelector(".info-loading");
 const languages = [
     {
+        name:"all languages",
+        color:"#000000"
+    },
+    {
         name:"javascript",
         color:"#f1e05a"
     },
@@ -35,7 +39,12 @@ const languages = [
 
 async function getRepoInfo(language){
     const letters = "abcdefghijklmnopqrstuvwxyz";
-    const request = await fetch(`https://api.github.com/search/repositories?q=${letters[getRandomInt(letters.length-1)]}+language:${language}`);
+    let request = null;
+    if(language===languages[0]){
+        request = await fetch(`https://api.github.com/search/repositories?q=${letters[getRandomInt(letters.length-1)]}`);
+    }else{
+        request = await fetch(`https://api.github.com/search/repositories?q=${letters[getRandomInt(letters.length-1)]}+language:${language}`);
+    }
     const data = await request.json();
     if(data.items.length){
         return data.items[getRandomInt(data.items.length-1)];
@@ -108,11 +117,17 @@ async function handleRepoInfo(){
     });
 }
 
-languages.forEach(language=>{
-    const languageOption = document.createElement("option");
-    languageOption.textContent = language.name;
-    languageSelector.appendChild(languageOption);
+languageSelector.innerHTML = '<option>Select a Language</option>';
+languageSelector.addEventListener("click",()=>{
+    languageSelector.innerHTML="";
+    languages.forEach(language=>{
+        const languageOption = document.createElement("option");
+        languageOption.textContent = language.name;
+        languageSelector.appendChild(languageOption);
+    });
 });
+
+
 
 languageSelector.addEventListener("change",async ()=>{
     handleRepoInfo();
